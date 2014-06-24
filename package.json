@@ -1,6 +1,6 @@
 {
   "name": "gulp-htmlinline",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "inline script and link for html",
   "main": "index.js",
   "scripts": {

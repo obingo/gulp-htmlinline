@@ -13,9 +13,7 @@ var REG_EXTERNAL_SCRIPT = /<script.+src=.+><\/script>/gi;
 module.exports = function(flag) {
   flag = flag || 'inline';
 
-  return through.obj(function(file) {
-    var that = this;
-
+  return through.obj(function(file, enc, callback) {
     var html = file.contents.toString();
     var basedir = dirname(file.path);
     var remotes = [];
@@ -42,7 +40,7 @@ module.exports = function(flag) {
 
     function done() {
       file.contents = new Buffer(html);
-      that.push(file);
+      callback(null, file);
     }
 
     // inline css
