@@ -10,7 +10,8 @@ var read = require('fs').readFileSync;
 var REG_LINK_STYLESHEET = /<link.+rel=('|")?stylesheet('|")?.+\/?>/gi;
 var REG_EXTERNAL_SCRIPT = /<script.+src=.+><\/script>/gi;
 
-module.exports = function() {
+module.exports = function(flag) {
+  flag = flag || 'inline';
 
   return through.obj(function(file) {
     var that = this;
@@ -47,7 +48,7 @@ module.exports = function() {
     // inline css
     html = html.replace(REG_LINK_STYLESHEET, function(text) {
       var el = $('link', text);
-      if (el.attr('inline') !== undefined && el.attr('href')) {
+      if (el.attr(flag) !== undefined && el.attr('href')) {
         var content = getContent(el.attr('href'));
         return format('<style>%s</style>', content);
       }
@@ -57,7 +58,7 @@ module.exports = function() {
     // inline js
     html = html.replace(REG_EXTERNAL_SCRIPT, function(text) {
       var el = $('script', text);
-      if (el.attr('inline') !== undefined && el.attr('src')) {
+      if (el.attr(flag) !== undefined && el.attr('src')) {
         var content = getContent(el.attr('src'));
         return format('<script>%s</script>', content);
       }
